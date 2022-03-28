@@ -8,9 +8,15 @@
 */
 //這個物件匯入其他檔案中即可使用。可用任意名字來接收這物件
 const http= require("http");
-const start= () =>{
+// const path = require("path");
+const url= require("url");
+
+const start= (route, handle) =>{
     const onRequest=(request,response)=>{
-        console.log("Request received. :>");
+        const pathname = url.parse(request.url).pathname;
+        console.log("Request for " + pathname + "received. :O");
+        route(handle, pathname);
+
         response.writeHead(200,{"Content-Type":"text/plain;charset=utf-8"});
         response.write("Hello World 2022/03/28 :3 !");
         response.end();
