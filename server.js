@@ -7,24 +7,38 @@
 }
 */
 //這個物件匯入其他檔案中即可使用。可用任意名字來接收這物件
-const http= require("http");
-const url= require("url");
+const http = require("http");
+const url = require("url");
 
-let start= (route, handle) =>{
-    let onRequest=(request,response)=>{
-        let pathname = url.parse(request.url).pathname;
-        console.log("Request for " + pathname + "received. :O");
-        route(handle, pathname, response);
+const start = (route, handle) => {
+  //箭頭函數
+  let onRequest = (request, response) => {
 
-    }
-    //把函數當作參數傳遞
-    http.createServer(onRequest).listen(8888);
+    let postData = "";
+    let pathname = url.parse(request.url).pathname;
+    console.log("Request for " + pathname + " received.");
+    // 設定接收資料的解碼格式
+    request.setEncoding("utf8");
+    // 登錄data事件監聽器
+    request.addListener("data", function (postDataChunk) {
+      // 將接收到的資料給予值給postData變數
+      postData += postDataChunk;
+      // 輸出日志
+      console.log("Received POST data chunk '" + postDataChunk + "'.");
+    });
+    // 登錄end事件監聽器
+    request.addListener("end", function () {
+      // 將postData傳遞給請求路由
+      route(handle, pathname, response, postData);
+    });
+  }
+  //把函數當作參數傳遞
+  http.createServer(onRequest).listen(8888);
 
-    console.log("Server has started...");
+  console.log("Server has started.");
 }
 
-
-exports.start=start;
+exports.start = start;
 
 
 /* 原本寫法(非模組化)
