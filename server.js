@@ -10,16 +10,12 @@
 const http= require("http");
 const url= require("url");
 
-const start= (route, handle) =>{
-    const onRequest=(request,response)=>{
-        const pathname = url.parse(request.url).pathname;
+let start= (route, handle) =>{
+    let onRequest=(request,response)=>{
+        let pathname = url.parse(request.url).pathname;
         console.log("Request for " + pathname + "received. :O");
-        route(handle, pathname);
+        route(handle, pathname, response);
 
-        response.writeHead(200,{"Content-Type":"text/plain;charset=utf-8"});
-        var content = route(handle, pathname);
-        response.write(content);
-        response.end();
     }
     //把函數當作參數傳遞
     http.createServer(onRequest).listen(8888);
