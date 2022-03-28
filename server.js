@@ -8,7 +8,6 @@
 */
 //這個物件匯入其他檔案中即可使用。可用任意名字來接收這物件
 const http= require("http");
-// const path = require("path");
 const url= require("url");
 
 const start= (route, handle) =>{
@@ -18,14 +17,14 @@ const start= (route, handle) =>{
         route(handle, pathname);
 
         response.writeHead(200,{"Content-Type":"text/plain;charset=utf-8"});
-        response.write("Hello World 2022/03/28 :3 !");
+        var content = route(handle, pathname);
+        response.write(content);
         response.end();
     }
     //把函數當作參數傳遞
     http.createServer(onRequest).listen(8888);
 
     console.log("Server has started...");
-    console.log("在瀏覽器中開啟localhost:8888吧");
 }
 
 

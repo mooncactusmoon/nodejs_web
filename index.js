@@ -10,4 +10,4 @@ handle["/start"] = requestHandlers.start;
 handle["/upload"] = requestHandlers.upload;
 
 //啟動伺服器
-server.start(router.route, handle.pathname);
+server.start(router.route, handle);
